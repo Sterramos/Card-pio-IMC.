@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+      </style>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Croissant+One&family=Dancing+Script:wght@700&family=Great+Vibes&family=Satisfy&display=swap');
+      </style>
+     
+    <link rel="stylesheet" href="style.css">
+    <title>Cardápio Semanal</title>
+</head>
+<body>
+    <h2>Master Chef</h2>
+    
+    <div class="menu">
+    <h1>Cardápio Semanal</h1>
+    <br>
+    <br>
+    <label for="diaDaSemana"><b>escolha o dia da semana:</b></label>
+    <select id="diaDaSemana">
+        <option value="Segunda-feira">Segunda-feira</option>
+        <option value="Terça-feira">Terça-feira</option>
+        <option value="Quarta-feira">Quarta-feira</option>
+        <option value="Quinta-feira">Quinta-feira</option>
+        <option value="Sexta-feira">Sexta-feira</option>
+        <option value="Sábado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+    </select>
+    <input type="text" id="prato">
+    <button onclick="adicionarItem()">Adicionar Prato</button>
+    
+    <ul  id="cardapio">
+        
+        
+    </ul>
+    <a class="link" href="imc.html">Calcule seu IMC</a>
+</div>
+    
+
+
+    
+    <script>
+        const cardapio = {};
+
+        function adicionarItem() {
+            const diaDaSemana = document.getElementById("diaDaSemana").value;
+            const prato = document.getElementById("prato").value;
+
+            if (!prato) return;
+
+            cardapio[diaDaSemana] = prato;
+            exibirCardapio();
+            document.getElementById("prato").value = '';
+        }
+
+        function exibirCardapio() {
+            const listaCardapio = document.getElementById("cardapio");
+            listaCardapio.innerHTML = "";
+
+            for (const dia in cardapio) {
+                const li = document.createElement("li");
+                li.textContent = `${dia}: ${cardapio[dia]}`;
+
+                const botaoExcluir = document.createElement("button");
+                botaoExcluir.textContent = "Excluir";
+                botaoExcluir.onclick = function () {
+                    const confirmar = confirm(`Deseja excluir ${cardapio[dia]} do cardápio de ${dia}?`);
+                    if (confirmar) {
+                        delete cardapio[dia];
+                        exibirCardapio();
+                    }
+                };
+
+                const botaoEditar = document.createElement("button");
+                botaoEditar.textContent = "Editar";
+                botaoEditar.onclick = function () {
+                    const novoPrato = prompt(`Digite o novo prato para ${dia}:`, cardapio[dia]);
+                    if (novoPrato !== null) {
+                        cardapio[dia] = novoPrato;
+                        exibirCardapio();
+                    }
+                };
+
+                li.appendChild(botaoExcluir);
+                li.appendChild(botaoEditar);
+
+                listaCardapio.appendChild(li);
+            }
+        }
+
+        exibirCardapio();
+    </script>
+</body>
+</html>
